@@ -1,0 +1,22 @@
+{
+    "userDetails": {
+        "firstName": "shahar",
+        "lastName": "morad",
+        "weight": {
+            "number": 50,
+            "type": "kilo"
+        },
+        "height": {
+            "number": 175,
+            "type": "centimeter"
+        }
+    },
+    "profileDetails": {
+        "username": "shmorad",
+        "password": "password123",
+        "registrationDate": "2024-01-01T09:00:00.000Z",
+        "email": "shaharmorad13239@gmail.com",
+        "status": "active", //enum
+        "notifications": true
+    }
+}

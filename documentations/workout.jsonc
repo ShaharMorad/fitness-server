@@ -1,0 +1,29 @@
+{
+    "workout": {
+        "timeData": {
+            "startTime": "2024-02-05T11:27:24.157Z", // for past workout
+            "endTime": "2024-02-05T12:27:24.157Z",// for past workout
+            "planedTime": "2024-02-05T12:15:00.000Z"// for future workout
+        },
+        "exercises": [ // this is the base workout with no time
+            { 
+                "name": "bench press",
+                "sets": [
+                    {
+                        "weight": {
+                            "number": 50,
+                            "type": "kilo"
+                        },
+                        "repetition": 12,
+                        "effortDuration": 40, // seconds
+                        "restDuration": 60, // seconds
+                        "...": "..." // what else?
+                    }
+                ]
+            },
+            {
+                "...": {}
+            }
+        ]
+    }
+}

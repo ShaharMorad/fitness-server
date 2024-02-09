@@ -1,0 +1,23 @@
+User Authentication Module:
+This module handles user registration, login, and authentication.
+Data Objects: User profiles (username, email, password).
+
+Workout History Module:
+Allows users to view their previous workouts.
+Data Objects: Workout records (date, exercises performed, sets, weights, effort).
+
+Workout Recording Module:
+Users can record details of their current workout.
+Data Objects: Exercise details (exercise name, sets, weights, time spent).
+
+Workout Planning Module:
+Helps users plan future workouts.
+Data Objects: Workout plans (calendar events, exercise routines).
+
+Analytics Module:
+Analyzes workout data for insights (e.g., progress tracking).
+Data Objects: Workout statistics (average weight lifted, total time spent).
+
+User Profile Module:
+Manages user profiles and preferences.
+Data Objects: User settings (notifications, workout preferences).
