@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { UpdateWorkoutDto } from './dto/update-workout.dto';
-import { UUID } from 'crypto';
+import { UUID, randomUUID } from 'crypto';
 import { Workout } from './entities/workout.entity';
 import { UsersWorkoutsMap } from './entities/userWorkoutsMap.interface';
 
@@ -11,27 +11,36 @@ import { UsersWorkoutsMap } from './entities/userWorkoutsMap.interface';
 export class WorkoutsService {
   private usersWorkoutsMap: UsersWorkoutsMap = {};
 
-  create(userId: UUID, createWorkoutDto: CreateWorkoutDto) {
+  create(userId: UUID, createWorkoutDto: CreateWorkoutDto): Workout[] {
     if (!this.usersWorkoutsMap[userId])
       this.usersWorkoutsMap[userId] = [];
 
-    this.usersWorkoutsMap[userId].push(createWorkoutDto);
+    if (!createWorkoutDto.date)
+      createWorkoutDto.date = new Date();
+
+    const newWorkout = { id: randomUUID(), exercise: [], ...createWorkoutDto }
+    this.usersWorkoutsMap[userId].push(newWorkout);
     return this.usersWorkoutsMap[userId]
   }
 
-  findAll(): UsersWorkoutsMap {
-    return this.usersWorkoutsMap;
+  findAllUserWorkouts(userId: UUID): Workout[] {
+    return this.usersWorkoutsMap[userId];
   }
 
-  findOne(id: UUID): Workout[] {
-    return this.usersWorkoutsMap[id];
+  findOne(userId: UUID, workoutId: UUID): Workout {
+    return this.findAllUserWorkouts(userId)?.find(w => w.id === workoutId);
   }
 
-  update(id: UUID, updateWorkoutDto: UpdateWorkoutDto): Workout[] {
-    return []; //`This action updates a #${id} workout`;
+  update(userId: UUID, workoutId: UUID, { date }: UpdateWorkoutDto): Workout {
+    const workout = this.findOne(userId, workoutId)
+    workout.date = date ?? workout.date;
+    return workout;
   }
 
-  remove(id: UUID): Workout[] {
-    return []; //`This action removes a #${id} workout`;
+  remove(userId: UUID, workoutId: UUID): Workout {
+    const workouts = this.findAllUserWorkouts(userId)
+    const indexToRemove = workouts.findIndex(w => w.id === workoutId);
+
+    return workouts.splice(indexToRemove, 1)?.[0]
   }
 }

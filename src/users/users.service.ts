@@ -3,17 +3,21 @@ import { CreateUserDto } from './dto/create-user.dto';
 import { UUID, randomUUID } from 'crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
 import { User } from './entities/user.entity';
+import { UserNotFoundException } from '../common/customExceptions/userNotFound.exception';
 
 @Injectable()
 export class UsersService {
     private users: User[] = [];
 
-    getAll(): any[] {
+    getAll(): User[] {
         return this.users;
     }
 
-    getById(id: UUID): any {
-        return this.users.find(user => user.id === id);
+    getById(id: UUID): User {
+        const user = this.users.find(user => user.id === id)
+        if (!user)
+            throw new UserNotFoundException();
+        return user 
     }
 
     create(createUserDto: CreateUserDto): User {
@@ -29,5 +33,10 @@ export class UsersService {
             return user;
         })
         return this.getById(id);
+    }
+
+    remove(id: UUID): User {
+        const indexToRemove = this.users.findIndex(u => u.id === id);
+        return this.users.splice(indexToRemove, 1)?.[0]
     }
 }

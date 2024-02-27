@@ -1,37 +1,40 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { WorkoutsService } from './workouts.service';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { UpdateWorkoutDto } from './dto/update-workout.dto';
 import { UUID } from 'crypto';
 import { Workout } from './entities/workout.entity';
-import { UsersWorkoutsMap } from './entities/userWorkoutsMap.interface';
 
-@Controller('workouts')
+@Controller('users/:userid/workouts')
 export class WorkoutsController {
   constructor(private readonly workoutsService: WorkoutsService) { }
 
-  @Post(':id')
-  create(@Param('id') userId: UUID, @Body() createWorkoutDto: CreateWorkoutDto) {
+  @Post()
+  create(@Param('userid', ParseUUIDPipe) userId: UUID, @Body() createWorkoutDto: CreateWorkoutDto) {
     return this.workoutsService.create(userId, createWorkoutDto);
   }
 
   @Get()
-  findAll(): UsersWorkoutsMap {
-    return this.workoutsService.findAll();
+  findAll(@Param('userid', ParseUUIDPipe) userId: UUID): Workout[] {
+    return this.workoutsService.findAllUserWorkouts(userId);
   }
 
-  @Get(':id')
-  findOne(@Param('id') id: UUID): Workout[] {
-    return this.workoutsService.findOne(id);
+  @Get(':workoutid')
+  findOne(@Param('userid', ParseUUIDPipe) userId: UUID,
+    @Param('workoutid', ParseUUIDPipe) workoutId: UUID): Workout {
+    return this.workoutsService.findOne(userId, workoutId);
   }
 
-  @Patch(':id')
-  update(@Param('id') id: UUID, @Body() updateWorkoutDto: UpdateWorkoutDto): Workout[] {
-    return this.workoutsService.update(id, updateWorkoutDto);
+  @Patch(':workoutid')
+  update(@Param('userid', ParseUUIDPipe) userId: UUID,
+    @Param('workoutid', ParseUUIDPipe) workoutId: UUID,
+    @Body() updateWorkoutDto: UpdateWorkoutDto): Workout {
+    return this.workoutsService.update(userId, workoutId, updateWorkoutDto);
   }
 
-  @Delete(':id')
-  remove(@Param('id') id: UUID): Workout[] {
-    return this.workoutsService.remove(id);
+  @Delete(':workoutid')
+  remove(@Param('userid', ParseUUIDPipe) userId: UUID,
+    @Param('workoutid', ParseUUIDPipe) workoutId: UUID): Workout {
+    return this.workoutsService.remove(userId, workoutId);
   }
 }

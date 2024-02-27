@@ -15,10 +15,47 @@ describe('AppController (e2e)', () => {
     await app.init();
   });
 
-  it('/ (GET)', () => {
+  it('/users (GET)', () => {
     return request(app.getHttpServer())
-      .get('/')
+      .get('/users')
       .expect(200)
-      .expect('Hello World!');
+      .expect([]);
+  });
+
+
+  it('full cycle', async () => {
+    const createUserResponse = await request(app.getHttpServer())
+      .post('/users')
+      .send({
+        firstName: "shahar",
+        lastName: "morad",
+        password: "123456",
+        email: "shah@gmail.com"
+      })
+      .expect(201)
+    const userId = createUserResponse.body.id;
+    expect(userId).toBeDefined();
+
+    const getUserResponse = await request(app.getHttpServer())
+      .get('/users/' + userId)
+      .expect(200);
+    expect(getUserResponse.body.id).toBe(userId);
+
+    const updateUserResponse = await request(app.getHttpServer())
+      .patch('/users/' + userId)
+      .send({
+        email: "new@gmail.com"
+      })
+      .expect(200);
+    expect(updateUserResponse.body.email).toBe("new@gmail.com");
+
+    await request(app.getHttpServer())
+      .delete('/users/' + userId)
+      .expect(200);
+
+    return request(app.getHttpServer())
+      .get('/users')
+      .expect(200)
+      .expect([]);
   });
 });
