@@ -24,9 +24,9 @@ describe('UsersService', () => {
 
 
     it('should return 2 different users array', async () => {
-      const { id: id1 } = service.create(aUser);
-      const { id: id2 } = service.create(aUser);
-      const ids = service.getAll().map(({ id }) => (id));
+      const { _id: id1 } = await service.create(aUser);
+      const { _id: id2 } = await service.create(aUser);
+      const ids = (await service.getAll()).map(({ _id }) => (_id));
       expect(ids).toHaveLength(2);
       expect(ids).toContain(id1);
       expect(ids).toContain(id2);

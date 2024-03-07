@@ -1,4 +1,7 @@
 import { Injectable } from '@nestjs/common';
+import { Model } from 'mongoose';
+import { InjectModel } from '@nestjs/mongoose';
+import { User as UserSchema } from './schemas/user.schema';
 import { CreateUserDto } from './dto/create-user.dto';
 import { UUID, randomUUID } from 'crypto';
 import { UpdateUserDto } from './dto/update-user.dto';
@@ -7,36 +10,34 @@ import { UserNotFoundException } from '../common/customExceptions/userNotFound.e
 
 @Injectable()
 export class UsersService {
-    private users: User[] = [];
+    constructor(@InjectModel(UserSchema.name) private userModel: Model<UserSchema>) { }
 
-    getAll(): User[] {
-        return this.users;
+    getAll(): Promise<User[]> {
+        return this.userModel.find();
     }
 
-    getById(id: UUID): User {
-        const user = this.users.find(user => user.id === id)
+    async getById(id: UUID): Promise<User> {
+        const user = await this.userModel.findOne({ _id: id })
         if (!user)
             throw new UserNotFoundException();
-        return user 
+        else
+            return user
     }
 
-    create(createUserDto: CreateUserDto): User {
-        const newUser = { id: randomUUID(), ...createUserDto }
-        this.users.push(newUser)
-        return newUser;
+    create(createUserDto: CreateUserDto): Promise<UserSchema> {
+        const newUser = { _id: randomUUID(), ...createUserDto }
+        const createdUser = new this.userModel(newUser);
+        return createdUser.save();
     }
 
-    update(id: UUID, updateUserDto: UpdateUserDto): User {
-        this.users = this.users.map(user => {
-            if (user.id === id)
-                return { ...user, ...updateUserDto }
-            return user;
-        })
-        return this.getById(id);
+    update(id: UUID, updateUserDto: UpdateUserDto): Promise<User> {
+        return this.userModel.findOneAndUpdate(
+            { _id: id },
+            { '$set': updateUserDto },
+            { new: true });
     }
 
-    remove(id: UUID): User {
-        const indexToRemove = this.users.findIndex(u => u.id === id);
-        return this.users.splice(indexToRemove, 1)?.[0]
+    async remove(id: UUID): Promise<User> {
+        return await this.userModel.findOneAndDelete({ _id: id });
     }
 }

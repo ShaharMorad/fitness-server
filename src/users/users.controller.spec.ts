@@ -29,7 +29,7 @@ describe('UsersController', () => {
     });
 
     it('should return an array with the created user', async () => {
-      const { id } = usersController.create(aUser);
+      const { _id: id } = await usersController.create(aUser);
       const createdUser = usersController.getAll()[0]
 
       expect(createdUser).toStrictEqual({ ...aUser, id });
@@ -38,7 +38,7 @@ describe('UsersController', () => {
 
   describe('update user', () => {
     it('should update only the fields', async () => {
-      const { id } = usersController.create(aUser);
+      const { _id: id } = await usersController.create(aUser);
       // @ts-ignore
       const updatedUser = usersController.update(id, {
         weight: 500,
@@ -50,8 +50,8 @@ describe('UsersController', () => {
 
   describe('remove user', () => {
     it('should remove only the specified user', async () => {
-      const { id } = usersController.create(aUser);
-      const { id: idToRemove } = usersController.create({ ...aUser, firstName: 'to remove' });
+      const { _id: id } = await usersController.create(aUser);
+      const { _id: idToRemove } = await usersController.create({ ...aUser, firstName: 'to remove' });
 
       expect(await usersController.getAll()).toHaveLength(2);
       usersController.remove(idToRemove);

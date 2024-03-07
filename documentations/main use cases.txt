@@ -1,0 +1,8 @@
+main use cases-
+login/user profile - validate/get user details
+calendar - get user history (dates of workouts)
+see/edit one workout - get/update user-workout-exercises-sets
+
+user - collection
+workout-exercise - collection
+set - in the workout-exercise collection or as a relation?

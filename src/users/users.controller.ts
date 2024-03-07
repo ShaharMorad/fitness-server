@@ -10,27 +10,27 @@ export class UsersController {
     constructor(private userService: UsersService) { }
 
     @Get()
-    getAll(): User[] {
+    getAll(): Promise<User[]> {
         return this.userService.getAll();
     }
 
     @Get(':id')
-    getById(@Param('id', ParseUUIDPipe) id: UUID): string {
+    getById(@Param('id', ParseUUIDPipe) id: UUID): Promise<User> {
         return this.userService.getById(id);
     }
 
     @Post()
-    create(@Body() createUserDto: CreateUserDto): User {
+    create(@Body() createUserDto: CreateUserDto): Promise<User> {
         return this.userService.create(createUserDto);
     }
 
     @Patch(':id')
-    update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateUserDto: UpdateUserDto): User {
+    update(@Param('id', ParseUUIDPipe) id: UUID, @Body() updateUserDto: UpdateUserDto): Promise<User> {
         return this.userService.update(id, updateUserDto);
     }
 
     @Delete(':id')
-    remove(@Param('id', ParseUUIDPipe) id: UUID): User {
+    remove(@Param('id', ParseUUIDPipe) id: UUID): Promise<User> {
         return this.userService.remove(id);
     }
 }
