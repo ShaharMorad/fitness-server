@@ -3,40 +3,39 @@ import { WorkoutsService } from './workouts.service';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { UpdateWorkoutDto } from './dto/update-workout.dto';
 import { UUID } from 'crypto';
-import { Workout } from './entities/workout.entity';
-import { Workout as WorkoutSchema } from './schemas/workout.schema';
+import { Workout } from './schemas/workout.schema';
 
 
-@Controller('users/:userid/workouts')
+@Controller('users/:uid/workouts')
 export class WorkoutsController {
   constructor(private readonly workoutsService: WorkoutsService) { }
 
   @Post()
-  create(@Param('userid', ParseUUIDPipe) userId: UUID, @Body() createWorkoutDto: CreateWorkoutDto): Promise<WorkoutSchema[]> {
-    return this.workoutsService.create(userId, createWorkoutDto);
+  create(@Param('uid', ParseUUIDPipe) uid: UUID, @Body() createWorkoutDto: CreateWorkoutDto): Promise<Workout[]> {
+    return this.workoutsService.create(uid, createWorkoutDto);
   }
 
   @Get()
-  findAll(@Param('userid', ParseUUIDPipe) userId: UUID): Promise<WorkoutSchema[]> {
-    return this.workoutsService.findAllUserWorkouts(userId);
+  findAll(@Param('uid', ParseUUIDPipe) uid: UUID): Promise<Workout[]> {
+    return this.workoutsService.findAllUserWorkouts(uid);
   }
 
-  @Get(':workoutid')
-  findOne(@Param('userid', ParseUUIDPipe) userId: UUID,
-    @Param('workoutid', ParseUUIDPipe) workoutId: UUID): Promise<WorkoutSchema> {
-    return this.workoutsService.findOne(userId, workoutId);
+  @Get(':wid')
+  findOne(@Param('uid', ParseUUIDPipe) uid: UUID,
+    @Param('wid', ParseUUIDPipe) wid: UUID): Promise<Workout> {
+    return this.workoutsService.getById(uid, wid);
   }
 
-  @Patch(':workoutid')
-  update(@Param('userid', ParseUUIDPipe) userId: UUID,
-    @Param('workoutid', ParseUUIDPipe) workoutId: UUID,
-    @Body() updateWorkoutDto: UpdateWorkoutDto): Promise<WorkoutSchema> {
-    return this.workoutsService.update(userId, workoutId, updateWorkoutDto);
+  @Patch(':wid')
+  update(@Param('uid', ParseUUIDPipe) uid: UUID,
+    @Param('wid', ParseUUIDPipe) wid: UUID,
+    @Body() updateWorkoutDto: UpdateWorkoutDto): Promise<Workout> {
+    return this.workoutsService.update(uid, wid, updateWorkoutDto);
   }
 
-  @Delete(':workoutid')
-  remove(@Param('userid', ParseUUIDPipe) userId: UUID,
-    @Param('workoutid', ParseUUIDPipe) workoutId: UUID): Promise<WorkoutSchema> {
-    return this.workoutsService.remove(userId, workoutId);
+  @Delete(':wid')
+  remove(@Param('uid', ParseUUIDPipe) uid: UUID,
+    @Param('wid', ParseUUIDPipe) wid: UUID): Promise<Workout> {
+    return this.workoutsService.remove(uid, wid);
   }
 }

@@ -2,11 +2,9 @@ import { Injectable } from '@nestjs/common';
 import { CreateWorkoutDto } from './dto/create-workout.dto';
 import { UpdateWorkoutDto } from './dto/update-workout.dto';
 import { UUID, randomUUID } from 'crypto';
-import { Workout } from './entities/workout.entity';
-import { UsersWorkoutsMap } from './entities/userWorkoutsMap.interface';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Workout as WorkoutSchema } from './schemas/workout.schema';
+import { Workout } from './schemas/workout.schema';
 import { UsersService } from 'src/users/users.service';
 import { WorkoutNotFoundException } from 'src/common/customExceptions/workoutNotFound.exception';
 
@@ -15,10 +13,10 @@ import { WorkoutNotFoundException } from 'src/common/customExceptions/workoutNot
 @Injectable()
 export class WorkoutsService {
 
-  constructor(@InjectModel(WorkoutSchema.name) private workoutModel: Model<WorkoutSchema>,
+  constructor(@InjectModel(Workout.name) private workoutModel: Model<Workout>,
     private userService: UsersService) { }
 
-  async create(userId: UUID, createWorkoutDto: CreateWorkoutDto): Promise<WorkoutSchema[]> {
+  async create(userId: UUID, createWorkoutDto: CreateWorkoutDto): Promise<Workout[]> {
     await this.userService.getById(userId);
 
     if (!createWorkoutDto.date)
@@ -30,12 +28,12 @@ export class WorkoutsService {
     return this.findAllUserWorkouts(userId);
   }
 
-  async findAllUserWorkouts(userId: UUID): Promise<WorkoutSchema[]> {
+  async findAllUserWorkouts(userId: UUID): Promise<Workout[]> {
     await this.userService.getById(userId);
     return this.workoutModel.find({ userId });
   }
 
-  async findOne(userId: UUID, workoutId: UUID): Promise<WorkoutSchema> {
+  async getById(userId: UUID, workoutId: UUID): Promise<Workout> {
     await this.userService.getById(userId);
 
     const workout = await this.workoutModel.findOne({ userId, _id: workoutId })
@@ -45,7 +43,7 @@ export class WorkoutsService {
       return workout
   }
 
-  async update(userId: UUID, workoutId: UUID, updateWorkoutDto: UpdateWorkoutDto): Promise<WorkoutSchema> {
+  async update(userId: UUID, workoutId: UUID, updateWorkoutDto: UpdateWorkoutDto): Promise<Workout> {
     await this.userService.getById(userId);
 
     return this.workoutModel.findOneAndUpdate(
@@ -54,7 +52,7 @@ export class WorkoutsService {
       { new: true });
   }
 
-  async remove(userId: UUID, workoutId: UUID): Promise<WorkoutSchema> {
+  async remove(userId: UUID, workoutId: UUID): Promise<Workout> {
     await this.userService.getById(userId);
 
     return await this.workoutModel.findOneAndDelete({ _id: workoutId, userId });
