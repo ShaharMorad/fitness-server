@@ -26,6 +26,12 @@ export class WorkoutsController {
     return this.workoutsService.getById(uid, wid);
   }
 
+  @Get(':wid/full')
+  getFull(@Param('uid', ParseUUIDPipe) uid: UUID,
+    @Param('wid', ParseUUIDPipe) wid: UUID): Promise<Workout> {
+    return this.workoutsService.getFull(uid, wid);
+  }
+
   @Patch(':wid')
   update(@Param('uid', ParseUUIDPipe) uid: UUID,
     @Param('wid', ParseUUIDPipe) wid: UUID,

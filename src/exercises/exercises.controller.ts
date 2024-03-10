@@ -4,7 +4,7 @@ import { CreateExerciseDto } from './dto/create-exercise.dto';
 import { UpdateExerciseDto } from './dto/update-exercise.dto';
 import { UUID } from 'crypto';
 
-@Controller('users/:uid/workouts/:wid')
+@Controller('users/:uid/workouts/:wid/exercises')
 export class ExercisesController {
   constructor(private readonly exercisesService: ExercisesService) { }
 

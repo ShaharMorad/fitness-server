@@ -9,4 +9,14 @@ export class AppController {
   getHello(): string {
     return this.appService.getHello();
   }
+
+  @Get()
+  IsAlive(): boolean {
+    return this.appService.isAlive();
+  }
+
+  @Get()
+  IsDBConnected(): boolean {
+    return this.appService.isDBConnected();
+  }
 }

@@ -4,9 +4,9 @@ import { UpdateExerciseDto } from './dto/update-exercise.dto';
 import { UUID, randomUUID } from 'crypto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';
-import { Workout } from 'src/workouts/schemas/workout.schema';
-import { WorkoutsService } from 'src/workouts/workouts.service';
-import { ExerciseNotFoundException } from 'src/common/customExceptions/exerciseNotFound.exception';
+import { ExerciseNotFoundException } from '../common/customExceptions/exerciseNotFound.exception';
+import { Workout } from '../workouts/schemas/workout.schema';
+import { WorkoutsService } from '../workouts/workouts.service';
 
 @Injectable()
 export class ExercisesService {
@@ -17,7 +17,7 @@ export class ExercisesService {
     await this.workoutsService.getById(userId, workoutId);
 
     const workout = await this.workoutModel.findOne({ userId, _id: workoutId })
-    workout.exercises.push({ _id: randomUUID(), ...createExerciseDto, sets: [] })
+    workout.exercises.push({ _id: randomUUID(), ...createExerciseDto })
 
     return workout.save();
   }

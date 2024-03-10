@@ -12,10 +12,6 @@ export class Exercise {
 
   @Prop()
   name: string;
-
-  @Prop()
-  sets: string[];
-
 }
 
 export const ExerciseSchema = SchemaFactory.createForClass(Exercise);
