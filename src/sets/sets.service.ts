@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateSetDto } from './dto/create-set.dto';
-import { UpdateSetDto } from './dto/update-set.dto';
+import { CreateSetDto, UpdateSetDto } from './dto/set.dto';
 import { UUID, randomUUID } from 'crypto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';

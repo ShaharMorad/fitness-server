@@ -32,6 +32,13 @@ describe('UsersController (e2e)', () => {
     await app.init();
   });
 
+  it('/users (GET) - empty', async () => {
+    return await request(app.getHttpServer())
+      .get('/users')
+      .expect(200)
+      .expect([]);
+  });
+
   it('/users (GET) - not exist user', async () => {
     return await request(app.getHttpServer())
       .get('/users/2ff3652a-0000-40c9-9c4d-ca2b2da9afdf')
@@ -67,5 +74,12 @@ describe('UsersController (e2e)', () => {
     await request(app.getHttpServer())
       .delete('/users/' + userId)
       .expect(200);
+  });
+
+  it('/users (GET) - user no longer exist', async () => {
+    return request(app.getHttpServer())
+      .get('/users')
+      .expect(200)
+      .expect([]);
   });
 });

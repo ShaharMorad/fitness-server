@@ -115,8 +115,6 @@ describe('General good (e2e)', () => {
     const allWorkoutRespons = (await request(app.getHttpServer())
       .get(`/users/${uid}/workouts/${wid}/full`)
       .expect(200)).body
-    console.log(allWorkoutRespons);
-
     const sets = allWorkoutRespons.exercises[0].sets;
 
     expect(allWorkoutRespons).toBeDefined();

@@ -2,9 +2,8 @@ import { Injectable } from '@nestjs/common';
 import { Model } from 'mongoose';
 import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
-import { CreateUserDto } from './dto/create-user.dto';
+import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
 import { UUID, randomUUID } from 'crypto';
-import { UpdateUserDto } from './dto/update-user.dto';
 import { UserNotFoundException } from '../common/customExceptions/userNotFound.exception';
 
 @Injectable()
@@ -39,7 +38,7 @@ export class UsersService {
         return result;
     }
 
-    async remove(id: UUID): Promise<User> {     
+    async remove(id: UUID): Promise<User> {
         const result = await this.userModel.findOneAndDelete({ _id: id });
         if (!result)
             throw new UserNotFoundException();

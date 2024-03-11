@@ -1,7 +1,6 @@
 import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
-import { CreateExerciseDto } from './dto/create-exercise.dto';
-import { UpdateExerciseDto } from './dto/update-exercise.dto';
+import { CreateExerciseDto,UpdateExerciseDto } from './dto/exercise.dto';
 import { UUID } from 'crypto';
 
 @Controller('users/:uid/workouts/:wid/exercises')

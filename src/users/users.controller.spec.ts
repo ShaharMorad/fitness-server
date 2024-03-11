@@ -1,20 +1,31 @@
 import { Test } from '@nestjs/testing';
 import { UsersController } from './users.controller';
-import { UsersService } from './users.service';
+import mongoose from 'mongoose';
+import { MongooseModule } from '@nestjs/mongoose';
+import { AppModule } from '../app.module';
+
+export const database = process.env.MONGO_URI_TEST;
+
+beforeAll(async () => {
+  await mongoose.connect(database);
+  await mongoose.connection.db.dropDatabase();
+});
+
+afterAll(async () => {
+  await mongoose.disconnect();
+});
 
 describe('UsersController', () => {
   let usersController: UsersController;
-  let usersService: UsersService;
   const aUser = { email: 's@s.s', password: '', lastName: 'm', firstName: 's' };
+  let uid;
 
 
   beforeEach(async () => {
     const moduleRef = await Test.createTestingModule({
-      controllers: [UsersController],
-      providers: [UsersService],
+      imports: [MongooseModule.forRoot(database), AppModule],
     }).compile();
 
-    usersService = moduleRef.get<UsersService>(UsersService);
     usersController = moduleRef.get<UsersController>(UsersController);
   });
 
@@ -23,34 +34,29 @@ describe('UsersController', () => {
       expect(await usersController.getAll()).toHaveLength(0);
     });
 
-    it('should return an array with one user', async () => {
-      usersController.create(aUser);
-      expect(await usersController.getAll()).toHaveLength(1);
-    });
-
     it('should return an array with the created user', async () => {
-      const { _id: id } = await usersController.create(aUser);
-      const createdUser = usersController.getAll()[0]
+      uid = (await usersController.create(aUser))._id;
+      const users = await usersController.getAll();
+      const { email, firstName, lastName, password, _id } = users[0];
 
-      expect(createdUser).toStrictEqual({ ...aUser, id });
+      expect(users).toHaveLength(1);
+      expect({ email, firstName, lastName, password, _id }).toEqual({ ...aUser, _id: uid });
     });
   });
 
   describe('update user', () => {
     it('should update only the fields', async () => {
-      const { _id: id } = await usersController.create(aUser);
       // @ts-ignore
-      const updatedUser = usersController.update(id, {
+      const { email, firstName, lastName, password, _id, weight, height } = await usersController.update(uid, {
         weight: 500,
         height: 10,
       })
-      expect(updatedUser).toStrictEqual({ ...aUser, id, weight: 500, height: 10, });
+      expect({ email, firstName, lastName, password, _id, weight, height }).toStrictEqual({ ...aUser, _id: uid, weight: 500, height: 10, });
     });
   });
 
   describe('remove user', () => {
     it('should remove only the specified user', async () => {
-      const { _id: id } = await usersController.create(aUser);
       const { _id: idToRemove } = await usersController.create({ ...aUser, firstName: 'to remove' });
 
       expect(await usersController.getAll()).toHaveLength(2);

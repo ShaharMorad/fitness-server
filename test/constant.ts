@@ -1,8 +1,8 @@
 import 'dotenv/config';
-import { CreateUserDto } from '../src/users/dto/create-user.dto';
-import { CreateWorkoutDto } from '../src/workouts/dto/create-workout.dto';
-import { CreateExerciseDto } from '../src/exercises/dto/create-exercise.dto';
-import { CreateSetDto } from '../src/sets/dto/create-set.dto';
+import { CreateUserDto } from '../src/users/dto/user.dto';
+import { CreateWorkoutDto } from '../src/workouts/dto/workout.dto';
+import { CreateExerciseDto } from '../src/exercises/dto/exercise.dto';
+import { CreateSetDto } from '../src/sets/dto/set.dto';
 
 export const TEST_DB = process.env.MONGO_URI_TEST;
 

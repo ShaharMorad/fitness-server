@@ -1,6 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { CreateWorkoutDto } from './dto/create-workout.dto';
-import { UpdateWorkoutDto } from './dto/update-workout.dto';
+import { CreateWorkoutDto, UpdateWorkoutDto } from './dto/workout.dto';
 import { UUID, randomUUID } from 'crypto';
 import { InjectModel } from '@nestjs/mongoose';
 import { Model } from 'mongoose';

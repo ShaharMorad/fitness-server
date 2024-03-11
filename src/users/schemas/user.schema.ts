@@ -17,16 +17,22 @@ export class User {
     lastName: string;
 
     @Prop()
-    weight: number;
-
-    @Prop()
-    height: number;
-
-    @Prop()
     password: string;
 
     @Prop()
     email: string;
+
+    @Prop()
+    weight: number;
+
+    @Prop()
+    height: number;
+    
+    @Prop()
+    username: string;
+
+    @Prop()
+    notifications: boolean;
 }
 
 export const UserSchema = SchemaFactory.createForClass(User);

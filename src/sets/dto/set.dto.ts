@@ -1,3 +1,4 @@
+import { PartialType } from "@nestjs/mapped-types";
 import { IsNumber, IsOptional } from "class-validator";
 
 export class CreateSetDto {
@@ -21,3 +22,5 @@ export class CreateSetDto {
     @IsNumber()
     restDuration: number;
 }
+
+export class UpdateSetDto extends PartialType(CreateSetDto) {}
