@@ -10,12 +10,12 @@ export class AppController {
     return this.appService.getHello();
   }
 
-  @Get()
+  @Get('/isAlive')
   IsAlive(): boolean {
     return this.appService.isAlive();
   }
 
-  @Get()
+  @Get('/isDBConnected')
   IsDBConnected(): boolean {
     return this.appService.isDBConnected();
   }

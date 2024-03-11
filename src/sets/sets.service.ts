@@ -1,48 +1,36 @@
 import { Injectable } from '@nestjs/common';
 import { CreateSetDto, UpdateSetDto } from './dto/set.dto';
-import { UUID, randomUUID } from 'crypto';
-import { InjectModel } from '@nestjs/mongoose';
-import { Model } from 'mongoose';
-import { Set } from './schemas/set.schema';
+import { UUID } from 'crypto';
 import { ExercisesService } from '../exercises/exercises.service';
+import { SetsDal } from './sets.dal';
 
 @Injectable()
 export class SetsService {
-  constructor(@InjectModel(Set.name) private setModel: Model<Set>,
+  constructor(private setsDal: SetsDal,
     private exercisesService: ExercisesService) { }
 
   async create(uid: UUID, wid: UUID, eid: UUID, createSetDto: CreateSetDto) {
     await this.exercisesService.getById(uid, wid, eid);
-
-    const newSet = { _id: randomUUID(), ...createSetDto, exerciseId: eid }
-    const createdWorkout = new this.setModel(newSet);
-    return createdWorkout.save();
+    return this.setsDal.create(eid, createSetDto);
   }
 
   async findAll(uid: UUID, wid: UUID, eid: UUID) {
     await this.exercisesService.getById(uid, wid, eid);
-
-    return await this.setModel.find({ exerciseId: eid }).sort({ order: 'asc' });
+    return this.setsDal.findAll(eid);
   }
 
   async findOne(uid: UUID, wid: UUID, eid: UUID, sid: UUID) {
     await this.exercisesService.getById(uid, wid, eid);
-
-    return await this.setModel.findOne({ exerciseId: eid, _id: sid });
+    return await this.setsDal.findOne(eid, sid);
   }
 
   async update(uid: UUID, wid: UUID, eid: UUID, sid: UUID, updateSetDto: UpdateSetDto) {
     await this.exercisesService.getById(uid, wid, eid);
-
-    return this.setModel.findOneAndUpdate(
-      { _id: sid, exerciseId: eid },
-      { '$set': updateSetDto },
-      { new: true });
+    return this.setsDal.update(eid, sid, updateSetDto);
   }
 
   async remove(uid: UUID, wid: UUID, eid: UUID, sid: UUID) {
     await this.exercisesService.getById(uid, wid, eid);
-
-    return await this.setModel.findOneAndDelete({ _id: sid, exerciseId: eid });
+    return await this.setsDal.remove(eid, sid);
   }
 }

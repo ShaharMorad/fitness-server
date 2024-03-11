@@ -1,21 +1,20 @@
 import { Injectable } from '@nestjs/common';
-import { Model } from 'mongoose';
-import { InjectModel } from '@nestjs/mongoose';
 import { User } from './schemas/user.schema';
 import { CreateUserDto, UpdateUserDto } from './dto/user.dto';
-import { UUID, randomUUID } from 'crypto';
+import { UUID } from 'crypto';
 import { UserNotFoundException } from '../common/customExceptions/userNotFound.exception';
+import { UsersDal } from './users.dal';
 
 @Injectable()
 export class UsersService {
-    constructor(@InjectModel(User.name) private userModel: Model<User>) { }
+    constructor(private userDal: UsersDal) { }
 
     getAll(): Promise<User[]> {
-        return this.userModel.find();
+        return this.userDal.getAll();
     }
 
     async getById(id: UUID): Promise<User> {
-        const user = await this.userModel.findOne({ _id: id })
+        const user = await this.userDal.getById(id)
         if (!user)
             throw new UserNotFoundException();
         else
@@ -23,23 +22,18 @@ export class UsersService {
     }
 
     create(createUserDto: CreateUserDto): Promise<User> {
-        const newUser = { _id: randomUUID(), ...createUserDto }
-        const createdUser = new this.userModel(newUser);
-        return createdUser.save();
+        return this.userDal.create(createUserDto);
     }
 
     async update(id: UUID, updateUserDto: UpdateUserDto): Promise<User> {
-        const result = await this.userModel.findOneAndUpdate(
-            { _id: id },
-            { $set: updateUserDto },
-            { new: true });
+        const result = await this.userDal.update(id, updateUserDto);
         if (!result)
             throw new UserNotFoundException();
         return result;
     }
 
     async remove(id: UUID): Promise<User> {
-        const result = await this.userModel.findOneAndDelete({ _id: id });
+        const result = await this.userDal.remove(id);
         if (!result)
             throw new UserNotFoundException();
         return result;

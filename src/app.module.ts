@@ -8,11 +8,13 @@ import { WorkoutsModule } from './workouts/workouts.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ExercisesModule } from './exercises/exercises.module';
 import { SetsModule } from './sets/sets.module';
+import { AppDal } from './app.dal';
 
 @Module({
-  imports: [UsersModule, WorkoutsModule, ExercisesModule, SetsModule, MongooseModule.forRoot(process.env.MONGO_URI)],
+  imports: [UsersModule, WorkoutsModule, ExercisesModule, SetsModule,
+    MongooseModule.forRoot(process.env.MONGO_URI)],
   controllers: [AppController],
-  providers: [AppService,],
+  providers: [AppService,AppDal],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

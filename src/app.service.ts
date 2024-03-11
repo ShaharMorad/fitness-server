@@ -1,8 +1,10 @@
 import { Injectable } from '@nestjs/common';
+import { AppDal } from './app.dal';
 
 @Injectable()
 export class AppService {
-  
+  constructor(private appDal: AppDal) { }
+
   getHello(): string {
     return 'Hello World!';
   }
@@ -12,6 +14,6 @@ export class AppService {
   }
 
   isDBConnected(): boolean {
-    return null;
+    return this.appDal.isDBConnected();
   }
 }
