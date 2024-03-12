@@ -1,8 +1,10 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, UseGuards } from '@nestjs/common';
 import { ExercisesService } from './exercises.service';
 import { CreateExerciseDto,UpdateExerciseDto } from './dto/exercise.dto';
 import { UUID } from 'crypto';
+import { AuthResourceGuard } from './authResource.guard';
 
+@UseGuards(AuthResourceGuard)
 @Controller('users/:uid/workouts/:wid/exercises')
 export class ExercisesController {
   constructor(private readonly exercisesService: ExercisesService) { }

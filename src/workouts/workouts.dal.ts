@@ -46,20 +46,20 @@ export class WorkoutsDal {
                     date: { $first: '$date' },
                     exerciseName: { $first: '$exercises.name' },
                     sets: {
-                        $push: '$exercises.sets' // Pushing sets into an array for each exercise
+                        $push: '$exercises.sets'
                     }
                 }
             },
             {
                 $group: {
-                    _id: '$workoutId', // Grouping by workout id
-                    userId: { $first: '$userId' }, // Taking the first user id
-                    date: { $first: '$date' }, // Taking the first date
+                    _id: '$workoutId',
+                    userId: { $first: '$userId' }, 
+                    date: { $first: '$date' }, 
                     exercises: {
                         $push: {
-                            _id: '$_id', // Grouping by exercise id
-                            name: '$exerciseName', // Taking the exercise name
-                            sets: '$sets' // Taking the sets array
+                            _id: '$_id', 
+                            name: '$exerciseName', 
+                            sets: '$sets' 
                         }
                     }
                 }

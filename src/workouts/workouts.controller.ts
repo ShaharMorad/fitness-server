@@ -1,10 +1,11 @@
-import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe } from '@nestjs/common';
+import { Controller, Get, Post, Body, Patch, Param, Delete, ParseUUIDPipe, UseGuards, UsePipes } from '@nestjs/common';
 import { WorkoutsService } from './workouts.service';
 import { CreateWorkoutDto, UpdateWorkoutDto } from './dto/workout.dto';
 import { UUID } from 'crypto';
 import { Workout } from './schemas/workout.schema';
+import { AuthResourceGuard } from './authResource.guard';
 
-
+@UseGuards(AuthResourceGuard)
 @Controller('users/:uid/workouts')
 export class WorkoutsController {
   constructor(private readonly workoutsService: WorkoutsService) { }

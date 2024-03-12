@@ -4,7 +4,7 @@ import { tap } from 'rxjs/operators';
 import { logger } from './logger';
 
 @Injectable()
-export class LoggingInterceptor implements NestInterceptor {
+export class UserInteractionInterceptor implements NestInterceptor {
     intercept(context: ExecutionContext, next: CallHandler): Observable<any> {
         const ctx = context.switchToHttp();
         const { method, url, body } = ctx.getRequest<Request>();
@@ -14,7 +14,7 @@ export class LoggingInterceptor implements NestInterceptor {
             .handle()
             .pipe(
                 tap(() => logger.info({
-                    describe: 'requests logger',
+                    describe: 'user interactions logger',
                     duration: `${Date.now() - before}ms`,
                     method, body, url,
                 })),
