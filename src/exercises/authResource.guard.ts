@@ -2,7 +2,7 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 import { isUUID } from 'class-validator';
 import { UUID } from 'crypto';
-import { UuidExpectedException } from '../common/customExceptions/uuidExpected.exception';
+import { UuidExpectedException } from '../common/uuidExpected.exception';
 import { WorkoutsService } from '../workouts/workouts.service';
 
 @Injectable()

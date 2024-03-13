@@ -1,20 +1,16 @@
-import 'dotenv/config';
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
-import { AppController } from './app.controller';
-import { AppService } from './app.service';
 import { UsersModule } from './users/users.module';
 import { LoggerMiddleware } from './common/logger.middleware';
 import { WorkoutsModule } from './workouts/workouts.module';
 import { MongooseModule } from '@nestjs/mongoose';
 import { ExercisesModule } from './exercises/exercises.module';
 import { SetsModule } from './sets/sets.module';
-import { AppDal } from './app.dal';
+import { ConfigModule } from '@nestjs/config';
+import { HealthModule } from './health/health.module';
 
 @Module({
-  imports: [UsersModule, WorkoutsModule, ExercisesModule, SetsModule,
-    MongooseModule.forRoot(process.env.MONGO_URI)],
-  controllers: [AppController],
-  providers: [AppService,AppDal],
+  imports: [ConfigModule.forRoot({ isGlobal: true }), UsersModule, WorkoutsModule, ExercisesModule, SetsModule,
+  MongooseModule.forRoot(process.env.MONGO_URI), HealthModule],
 })
 export class AppModule implements NestModule {
   configure(consumer: MiddlewareConsumer) {

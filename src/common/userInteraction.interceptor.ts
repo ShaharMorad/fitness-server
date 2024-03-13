@@ -9,15 +9,14 @@ export class UserInteractionInterceptor implements NestInterceptor {
         const ctx = context.switchToHttp();
         const { method, url, body } = ctx.getRequest<Request>();
 
-        const before = Date.now();
+        const message = {
+            describe: 'user interactions logger',
+            method, body, url
+        }
+
+        logger.profile(message);
         return next
             .handle()
-            .pipe(
-                tap(() => logger.info({
-                    describe: 'user interactions logger',
-                    duration: `${Date.now() - before}ms`,
-                    method, body, url,
-                })),
-            );
+            .pipe(tap(() => logger.profile(message)));
     }
 }

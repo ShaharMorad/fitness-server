@@ -1,4 +1,3 @@
-import 'dotenv/config';
 import { CreateUserDto } from '../src/users/dto/user.dto';
 import { CreateWorkoutDto } from '../src/workouts/dto/workout.dto';
 import { CreateExerciseDto } from '../src/exercises/dto/exercise.dto';

@@ -30,7 +30,7 @@ export class UsersDal {
             { new: true });
     }
 
-    async remove(id: UUID): Promise<User> {
+    async remove(id: UUID): Promise<User> {        
         return await this.userModel.findOneAndDelete({ _id: id });
     }
 }

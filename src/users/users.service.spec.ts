@@ -3,10 +3,7 @@ import { UsersService } from './users.service';
 import { MongooseModule } from '@nestjs/mongoose';
 import { AppModule } from '../app.module';
 import mongoose from 'mongoose';
-import { NotFoundException } from '@nestjs/common';
-import { UserNotFoundException } from '../common/customExceptions/userNotFound.exception';
-import { WorkoutNotFoundException } from '../common/customExceptions/workoutNotFound.exception';
-import { ArgumentOutOfRangeError } from 'rxjs';
+import { UserNotFoundException } from './userNotFound.exception';
 
 export const database = process.env.MONGO_URI_TEST;
 

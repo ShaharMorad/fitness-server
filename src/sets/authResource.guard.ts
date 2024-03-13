@@ -3,7 +3,7 @@ import { Request } from 'express';
 import { ExercisesService } from '../exercises/exercises.service';
 import { isUUID } from 'class-validator';
 import { UUID } from 'crypto';
-import { UuidExpectedException } from '../common/customExceptions/uuidExpected.exception';
+import { UuidExpectedException } from '../common/uuidExpected.exception';
 
 @Injectable()
 export class AuthResourceGuard implements CanActivate {
