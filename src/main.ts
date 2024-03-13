@@ -9,6 +9,6 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({ whitelist: true }));
   app.useGlobalFilters(new GlobalExceptionFilter());
   app.useGlobalInterceptors(new UserInteractionInterceptor());
-  await app.listen(3000);
+  await app.listen(process.env.PORT);
 }
 bootstrap();

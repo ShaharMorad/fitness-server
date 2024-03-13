@@ -1,4 +1,3 @@
-import 'dotenv/config';
 const winston = require('winston');
 
 export const logger = winston.createLogger({
