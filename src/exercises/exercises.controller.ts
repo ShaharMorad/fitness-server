@@ -10,39 +10,39 @@ export class ExercisesController {
   constructor(private readonly exercisesService: ExercisesService) { }
 
   @Post()
-  create(@Param('uid', ParseUUIDPipe) uid: UUID,
-    @Param('wid', ParseUUIDPipe) wid: UUID,
+  create(@Param('uid', ParseUUIDPipe) userId: UUID,
+    @Param('wid', ParseUUIDPipe) workoutId: UUID,
     @Body() createExerciseDto: CreateExerciseDto) {
-    return this.exercisesService.create(uid, wid, createExerciseDto);
+    return this.exercisesService.create(userId, workoutId, createExerciseDto);
   }
 
   @Get()
-  findAll(@Param('uid', ParseUUIDPipe) uid: UUID,
-    @Param('wid', ParseUUIDPipe) wid: UUID) {
-    return this.exercisesService.findAllWorkoutExercies(uid, wid);
+  findAll(@Param('uid', ParseUUIDPipe) userId: UUID,
+    @Param('wid', ParseUUIDPipe) workoutId: UUID) {
+    return this.exercisesService.findAllWorkoutExercies(userId, workoutId);
   }
 
   @Get(':eid')
-  findOne(@Param('uid', ParseUUIDPipe) uid: UUID,
-    @Param('wid', ParseUUIDPipe) wid: UUID,
-    @Param('eid', ParseUUIDPipe) eid: UUID,
+  findOne(@Param('uid', ParseUUIDPipe) userId: UUID,
+    @Param('wid', ParseUUIDPipe) workoutId: UUID,
+    @Param('eid', ParseUUIDPipe) exerciseId: UUID,
   ) {
-    return this.exercisesService.getById(uid, wid, eid);
+    return this.exercisesService.getById(userId, workoutId, exerciseId);
   }
 
   @Patch(':eid')
-  update(@Param('eid', ParseUUIDPipe) eid: UUID,
-    @Param('uid', ParseUUIDPipe) uid: UUID,
-    @Param('wid', ParseUUIDPipe) wid: UUID,
+  update(@Param('eid', ParseUUIDPipe) exerciseId: UUID,
+    @Param('uid', ParseUUIDPipe) userId: UUID,
+    @Param('wid', ParseUUIDPipe) workoutId: UUID,
     @Body() updateExerciseDto: UpdateExerciseDto) {
-    return this.exercisesService.update(uid, wid, eid, updateExerciseDto);
+    return this.exercisesService.update(userId, workoutId, exerciseId, updateExerciseDto);
   }
 
   @Delete(':eid')
-  remove(@Param('eid', ParseUUIDPipe) eid: UUID,
-    @Param('uid', ParseUUIDPipe) uid: UUID,
-    @Param('wid', ParseUUIDPipe) wid: UUID,
+  remove(@Param('eid', ParseUUIDPipe) exerciseId: UUID,
+    @Param('uid', ParseUUIDPipe) userId: UUID,
+    @Param('wid', ParseUUIDPipe) workoutId: UUID,
   ) {
-    return this.exercisesService.remove(uid, wid, eid);
+    return this.exercisesService.remove(userId, workoutId, exerciseId);
   }
 }

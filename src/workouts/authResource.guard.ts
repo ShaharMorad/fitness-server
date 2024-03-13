@@ -2,8 +2,8 @@ import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Request } from 'express';
 import { isUUID } from 'class-validator';
 import { UUID } from 'crypto';
-import { UuidExpectedException } from '../common/customExceptions/uuidExpected.exception';
 import { UsersService } from '../users/users.service';
+import { UuidExpectedException } from '../common/uuidExpected.exception';
 
 @Injectable()
 export class AuthResourceGuard implements CanActivate {

@@ -3,7 +3,7 @@ import { InjectModel } from '@nestjs/mongoose';
 import { UUID, randomUUID } from 'crypto';
 import { Model } from 'mongoose';
 import { CreateWorkoutDto, UpdateWorkoutDto } from './dto/workout.dto';
-import { Workout } from './schemas/workout.schema';
+import { Workout, WorkoutDocument } from './schemas/workout.schema';
 
 @Injectable()
 export class WorkoutsDal {
@@ -20,11 +20,11 @@ export class WorkoutsDal {
         return this.workoutModel.find({ userId });
     }
 
-    getById(userId: UUID, workoutId: UUID): Promise<Workout> {
+    getById(userId: UUID, workoutId: UUID): Promise<WorkoutDocument> {
         return this.workoutModel.findOne({ userId, _id: workoutId })
     }
 
-    getFull(userId: UUID, workoutId: UUID): Promise<any> {
+    getFullById(userId: UUID, workoutId: UUID): Promise<any> {
         return this.workoutModel.aggregate([
             { $match: { userId, _id: workoutId } },
             { $unwind: '$exercises' },

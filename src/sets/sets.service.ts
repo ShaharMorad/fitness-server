@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { CreateSetDto, UpdateSetDto } from './dto/set.dto';
 import { UUID } from 'crypto';
 import { SetsDal } from './sets.dal';
-import { SetNotFoundException } from '../common/customExceptions/setNotFound.exception';
+import { SetNotFoundException } from './setNotFound.exception';
 
 @Injectable()
 export class SetsService {
@@ -19,7 +19,7 @@ export class SetsService {
   async findOne(eid: UUID, sid: UUID) {
     const set = await this.setsDal.findOne(eid, sid);
     if (!set)
-      throw new SetNotFoundException();
+      throw new SetNotFoundException(sid);
     else
       return set
   }
