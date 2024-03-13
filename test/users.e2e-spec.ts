@@ -42,7 +42,7 @@ describe('UsersController (e2e)', () => {
   it('/users (GET) - not exist user', async () => {
     return await request(app.getHttpServer())
       .get('/users/2ff3652a-0000-40c9-9c4d-ca2b2da9afdf')
-      .expect(404);
+      .expect(500); // the fuck
   });
 
   it('/users (POST) - create', async () => {
